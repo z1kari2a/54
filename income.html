@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الميزانية - الدخل</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-chart-pie"></i>
+                <h1>إدارة الميزانية</h1>
+            </div>
+            <div class="month-display">
+                <h2 id="current-month">سبتمبر 2024</h2>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> لوحة التحكم</a></li>
+            <li><a href="income.html" class="nav-link active"><i class="fas fa-arrow-up"></i> الدخل</a></li>
+            <li><a href="expenses.html" class="nav-link"><i class="fas fa-arrow-down"></i> المصاريف</a></li>
+            <li><a href="bills.html" class="nav-link"><i class="fas fa-file-invoice"></i> الفواتير</a></li>
+            <li><a href="savings.html" class="nav-link"><i class="fas fa-piggy-bank"></i> المدخرات</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="table-container">
+            <div class="table-header">
+                <h3>مصادر الدخل</h3>
+                <button class="btn" onclick="openModal('addIncomeModal')">
+                    <i class="fas fa-plus"></i>
+                    إضافة مصدر دخل جديد
+                </button>
+            </div>
+            
+            <table id="incomeTable">
+                <thead>
+                    <tr>
+                        <th>المصدر</th>
+                        <th>المبلغ المخطط</th>
+                        <th>المبلغ الفعلي</th>
+                        <th>الفرق</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="incomeTableBody">
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Add Income Modal -->
+    <div id="addIncomeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addIncomeModal')">&times;</span>
+            <h3>إضافة مصدر دخل جديد</h3>
+            <form id="addIncomeForm">
+                <div class="form-group">
+                    <label for="incomeSource">المصدر:</label>
+                    <input type="text" id="incomeSource" name="source" required>
+                </div>
+                <div class="form-group">
+                    <label for="incomePlanned">المبلغ المخطط:</label>
+                    <input type="number" id="incomePlanned" name="planned" required>
+                </div>
+                <div class="form-group">
+                    <label for="incomeActual">المبلغ الفعلي:</label>
+                    <input type="number" id="incomeActual" name="actual" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="income.js"></script>
+</body>
+</html>

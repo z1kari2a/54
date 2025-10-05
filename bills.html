@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الميزانية - الفواتير</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-chart-pie"></i>
+                <h1>إدارة الميزانية</h1>
+            </div>
+            <div class="month-display">
+                <h2 id="current-month">سبتمبر 2024</h2>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> لوحة التحكم</a></li>
+            <li><a href="income.html" class="nav-link"><i class="fas fa-arrow-up"></i> الدخل</a></li>
+            <li><a href="expenses.html" class="nav-link"><i class="fas fa-arrow-down"></i> المصاريف</a></li>
+            <li><a href="bills.html" class="nav-link active"><i class="fas fa-file-invoice"></i> الفواتير</a></li>
+            <li><a href="savings.html" class="nav-link"><i class="fas fa-piggy-bank"></i> المدخرات</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Bills Summary Cards -->
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card bills">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>الفواتير المدفوعة</h3>
+                        <p class="stat-amount" id="paid-bills">3</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card expenses">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>في الانتظار</h3>
+                        <p class="stat-amount" id="pending-bills">0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card savings">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>متأخرة</h3>
+                        <p class="stat-amount" id="overdue-bills">1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bills Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <h3>تفاصيل الفواتير</h3>
+                <button class="btn" onclick="openModal('addBillModal')">
+                    <i class="fas fa-plus"></i>
+                    إضافة فاتورة جديدة
+                </button>
+            </div>
+            
+            <table id="billsTable">
+                <thead>
+                    <tr>
+                        <th>نوع الفاتورة</th>
+                        <th>المخطط</th>
+                        <th>الفعلي</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="billsTableBody">
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Add Bill Modal -->
+    <div id="addBillModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addBillModal')">&times;</span>
+            <h3>إضافة فاتورة جديدة</h3>
+            <form id="addBillForm">
+                <div class="form-group">
+                    <label for="billType">نوع الفاتورة:</label>
+                    <select id="billType" name="type" required>
+                        <option value="">اختر نوع الفاتورة</option>
+                        <option value="إيجار">إيجار</option>
+                        <option value="كهرباء">كهرباء</option>
+                        <option value="مياه">مياه</option>
+                        <option value="إنترنت">إنترنت</option>
+                        <option value="هاتف">هاتف</option>
+                        <option value="غاز">غاز</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="billPlanned">المبلغ المخطط:</label>
+                    <input type="number" id="billPlanned" name="planned" required>
+                </div>
+                <div class="form-group">
+                    <label for="billActual">المبلغ الفعلي:</label>
+                    <input type="number" id="billActual" name="actual" required>
+                </div>
+                <div class="form-group">
+                    <label for="billStatus">الحالة:</label>
+                    <select id="billStatus" name="status" required>
+                        <option value="paid">مدفوعة</option>
+                        <option value="pending">في الانتظار</option>
+                        <option value="overdue">متأخرة</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="bills.js"></script>
+</body>
+</html>
