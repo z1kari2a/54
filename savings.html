@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>المدخرات - مدير الميزانية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script defer src="assets/js/data.js"></script>
+  <script defer src="assets/js/main.js"></script>
+</head>
+<body data-page="savings">
+  <div id="navbar-placeholder"></div>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">المدخرات</h1>
+      <p class="page-subtitle">تتبع التقدم نحو الأهداف</p>
+    </div>
+
+    <section class="charts-grid">
+      <article class="chart-card">
+        <h4>التقدم نحو الهدف</h4>
+        <div class="canvas-wrap">
+          <canvas id="savingsProgressChart"></canvas>
+        </div>
+      </article>
+    </section>
+
+    <div class="spacer"></div>
+
+    <section class="table-card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>نوع الادخار</th>
+            <th>المخطط</th>
+            <th>الفعلي</th>
+          </tr>
+        </thead>
+        <tbody id="savingsTbody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    fetch('partials/navbar.html').then(r => r.text()).then(html => {
+      document.getElementById('navbar-placeholder').innerHTML = html;
+      if (window.budgetAppAfterNavbarLoad) window.budgetAppAfterNavbarLoad();
+    });
+  </script>
+</body>
+</html>
