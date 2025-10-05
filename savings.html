@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الميزانية - المدخرات</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-chart-pie"></i>
+                <h1>إدارة الميزانية</h1>
+            </div>
+            <div class="month-display">
+                <h2 id="current-month">سبتمبر 2024</h2>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> لوحة التحكم</a></li>
+            <li><a href="income.html" class="nav-link"><i class="fas fa-arrow-up"></i> الدخل</a></li>
+            <li><a href="expenses.html" class="nav-link"><i class="fas fa-arrow-down"></i> المصاريف</a></li>
+            <li><a href="bills.html" class="nav-link"><i class="fas fa-file-invoice"></i> الفواتير</a></li>
+            <li><a href="savings.html" class="nav-link active"><i class="fas fa-piggy-bank"></i> المدخرات</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Savings Progress Chart -->
+        <div class="chart-container">
+            <div class="chart-card">
+                <h3>تقدم المدخرات نحو الأهداف</h3>
+                <div class="bar-chart-container">
+                    <canvas id="savingsProgressChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Savings Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <h3>تفاصيل المدخرات</h3>
+                <button class="btn" onclick="openModal('addSavingModal')">
+                    <i class="fas fa-plus"></i>
+                    إضافة مدخر جديد
+                </button>
+            </div>
+            
+            <table id="savingsTable">
+                <thead>
+                    <tr>
+                        <th>نوع الادخار</th>
+                        <th>المخطط</th>
+                        <th>الفعلي</th>
+                        <th>التقدم</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="savingsTableBody">
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Add Saving Modal -->
+    <div id="addSavingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addSavingModal')">&times;</span>
+            <h3>إضافة مدخر جديد</h3>
+            <form id="addSavingForm">
+                <div class="form-group">
+                    <label for="savingType">نوع الادخار:</label>
+                    <select id="savingType" name="type" required>
+                        <option value="">اختر نوع الادخار</option>
+                        <option value="حساب توفير">حساب توفير</option>
+                        <option value="استثمار">استثمار</option>
+                        <option value="طوارئ">طوارئ</option>
+                        <option value="سفر">سفر</option>
+                        <option value="تعليم">تعليم</option>
+                        <option value="تقاعد">تقاعد</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="savingPlanned">المبلغ المخطط:</label>
+                    <input type="number" id="savingPlanned" name="planned" required>
+                </div>
+                <div class="form-group">
+                    <label for="savingActual">المبلغ الفعلي:</label>
+                    <input type="number" id="savingActual" name="actual" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="savings.js"></script>
+</body>
+</html>
