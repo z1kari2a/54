@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المدخرات - إدارة الميزانية</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h2>💰 إدارة الميزانية</h2>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">لوحة التحكم</a></li>
+            <li><a href="income.html" class="nav-link">الدخل</a></li>
+            <li><a href="expenses.html" class="nav-link">المصاريف</a></li>
+            <li><a href="bills.html" class="nav-link">الفواتير</a></li>
+            <li><a href="savings.html" class="nav-link active">المدخرات</a></li>
+        </ul>
+    </nav>
+
+    <!-- محتوى صفحة المدخرات -->
+    <div class="container">
+        <div class="page-header">
+            <h1>إدارة المدخرات</h1>
+            <button class="btn-primary" onclick="showAddSavingModal()">+ إضافة هدف ادخار جديد</button>
+        </div>
+
+        <!-- الرسوم البيانية للمدخرات -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <h3>تقدم المدخرات نحو الأهداف</h3>
+                <canvas id="savingsProgressChart"></canvas>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>نوع الادخار</th>
+                        <th>الهدف المخطط</th>
+                        <th>المبلغ الحالي</th>
+                        <th>النسبة المئوية</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="savingsTableBody">
+                    <tr>
+                        <td>حساب التوفير</td>
+                        <td>10000 ريال</td>
+                        <td>7500 ريال</td>
+                        <td>75%</td>
+                        <td><span class="status-good">جيد</span></td>
+                        <td>
+                            <button class="btn-edit" onclick="editSaving(this)">تعديل</button>
+                            <button class="btn-delete" onclick="deleteSaving(this)">حذف</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>شراء سيارة</td>
+                        <td>50000 ريال</td>
+                        <td>15000 ريال</td>
+                        <td>30%</td>
+                        <td><span class="status-pending">في الطريق</span></td>
+                        <td>
+                            <button class="btn-edit" onclick="editSaving(this)">تعديل</button>
+                            <button class="btn-delete" onclick="deleteSaving(this)">حذف</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>طوارئ</td>
+                        <td>15000 ريال</td>
+                        <td>12000 ريال</td>
+                        <td>80%</td>
+                        <td><span class="status-good">جيد</span></td>
+                        <td>
+                            <button class="btn-edit" onclick="editSaving(this)">تعديل</button>
+                            <button class="btn-delete" onclick="deleteSaving(this)">حذف</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة هدف ادخار جديد -->
+    <div id="addSavingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideAddSavingModal()">&times;</span>
+            <h2>إضافة هدف ادخار جديد</h2>
+            <form id="addSavingForm">
+                <div class="form-group">
+                    <label for="savingType">نوع الادخار:</label>
+                    <input type="text" id="savingType" required placeholder="مثال: شراء منزل، إجازة، طوارئ">
+                </div>
+                <div class="form-group">
+                    <label for="savingGoal">الهدف المخطط:</label>
+                    <input type="number" id="savingGoal" required>
+                </div>
+                <div class="form-group">
+                    <label for="savingCurrent">المبلغ الحالي:</label>
+                    <input type="number" id="savingCurrent" required>
+                </div>
+                <button type="submit" class="btn-primary">إضافة</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

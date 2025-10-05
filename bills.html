@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الفواتير - إدارة الميزانية</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h2>💰 إدارة الميزانية</h2>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">لوحة التحكم</a></li>
+            <li><a href="income.html" class="nav-link">الدخل</a></li>
+            <li><a href="expenses.html" class="nav-link">المصاريف</a></li>
+            <li><a href="bills.html" class="nav-link active">الفواتير</a></li>
+            <li><a href="savings.html" class="nav-link">المدخرات</a></li>
+        </ul>
+    </nav>
+
+    <!-- محتوى صفحة الفواتير -->
+    <div class="container">
+        <div class="page-header">
+            <h1>إدارة الفواتير</h1>
+        </div>
+
+        <!-- فلتر حالة الفواتير -->
+        <div class="filter-buttons">
+            <button class="btn-filter active" onclick="filterBills('all')">جميع الفواتير</button>
+            <button class="btn-filter" onclick="filterBills('paid')">مدفوعة ✅</button>
+            <button class="btn-filter" onclick="filterBills('pending')">معلقة ⏳</button>
+            <button class="btn-filter" onclick="filterBills('overdue')">متأخرة ⚠️</button>
+        </div>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>نوع الفاتورة</th>
+                        <th>المبلغ المخطط</th>
+                        <th>المبلغ الفعلي</th>
+                        <th>تاريخ الاستحقاق</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="billsTableBody">
+                    <tr class="bill-paid">
+                        <td>إيجار الشقة</td>
+                        <td>2500 ريال</td>
+                        <td>2500 ريال</td>
+                        <td>2024-09-01</td>
+                        <td><span class="status-paid">مدفوعة ✅</span></td>
+                        <td>
+                            <button class="btn-edit" onclick="editBill(this)">تعديل</button>
+                            <button class="btn-delete" onclick="deleteBill(this)">حذف</button>
+                        </td>
+                    </tr>
+                    <tr class="bill-pending">
+                        <td>فاتورة الكهرباء</td>
+                        <td>200 ريال</td>
+                        <td>0 ريال</td>
+                        <td>2024-09-15</td>
+                        <td><span class="status-pending">معلقة ⏳</span></td>
+                        <td>
+                            <button class="btn-pay" onclick="markAsPaid(this)">دفع</button>
+                            <button class="btn-edit" onclick="editBill(this)">تعديل</button>
+                            <button class="btn-delete" onclick="deleteBill(this)">حذف</button>
+                        </td>
+                    </tr>
+                    <tr class="bill-overdue">
+                        <td>فاتورة الإنترنت</td>
+                        <td>150 ريال</td>
+                        <td>0 ريال</td>
+                        <td>2024-08-25</td>
+                        <td><span class="status-overdue">متأخرة ⚠️</span></td>
+                        <td>
+                            <button class="btn-pay urgent" onclick="markAsPaid(this)">دفع عاجل</button>
+                            <button class="btn-edit" onclick="editBill(this)">تعديل</button>
+                            <button class="btn-delete" onclick="deleteBill(this)">حذف</button>
+                        </td>
+                    </tr>
+                    <tr class="bill-paid">
+                        <td>فاتورة الهاتف</td>
+                        <td>100 ريال</td>
+                        <td>100 ريال</td>
+                        <td>2024-09-10</td>
+                        <td><span class="status-paid">مدفوعة ✅</span></td>
+                        <td>
+                            <button class="btn-edit" onclick="editBill(this)">تعديل</button>
+                            <button class="btn-delete" onclick="deleteBill(this)">حذف</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
