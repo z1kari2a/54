@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لوحة التحكم - مدير الميزانية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script defer src="assets/js/data.js"></script>
+  <script defer src="assets/js/main.js"></script>
+</head>
+<body data-page="dashboard">
+  <!-- Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">لوحة التحكم</h1>
+      <p class="page-subtitle">نظرة عامة على الشهر الحالي</p>
+    </div>
+
+    <section class="cards-grid">
+      <article class="card">
+        <h3>إجمالي الدخل</h3>
+        <div id="totalIncome" class="stat-value">—</div>
+      </article>
+      <article class="card">
+        <h3>إجمالي المصاريف</h3>
+        <div id="totalExpenses" class="stat-value">—</div>
+      </article>
+      <article class="card">
+        <h3>إجمالي الفواتير</h3>
+        <div id="totalBills" class="stat-value">—</div>
+      </article>
+      <article class="card">
+        <h3>إجمالي المدخرات</h3>
+        <div id="totalSavings" class="stat-value">—</div>
+      </article>
+    </section>
+
+    <section class="charts-grid">
+      <article class="chart-card">
+        <h4>المتبقي للصرف</h4>
+        <div class="canvas-wrap">
+          <canvas id="leftoverChart"></canvas>
+        </div>
+      </article>
+      <article class="chart-card">
+        <h4>ملخص التدفق النقدي</h4>
+        <div class="canvas-wrap">
+          <canvas id="cashflowChart"></canvas>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    // Inject navbar partial (simple client-side include)
+    fetch('partials/navbar.html').then(r => r.text()).then(html => {
+      document.getElementById('navbar-placeholder').innerHTML = html;
+      if (window.budgetAppAfterNavbarLoad) window.budgetAppAfterNavbarLoad();
+    });
+  </script>
+</body>
+</html>
