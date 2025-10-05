@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>الفواتير - Budgetly</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+  <header class="header" data-header></header>
+  <main class="container">
+    <section class="section">
+      <div class="actions">
+        <input class="input" id="bill-type" placeholder="نوع الفاتورة" />
+        <input class="input" id="bill-planned" placeholder="المخطط" type="number" />
+        <input class="input" id="bill-actual" placeholder="الفعلي" type="number" />
+        <select class="input" id="bill-status">
+          <option value="paid">مدفوعة</option>
+          <option value="overdue">متأخرة</option>
+        </select>
+        <button class="button" id="add-bill">إضافة فاتورة</button>
+      </div>
+    </section>
+
+    <section class="section" style="margin-top:16px">
+      <table class="table">
+        <thead>
+          <tr><th>النوع</th><th>المخطط</th><th>الفعلي</th><th>الحالة</th></tr>
+        </thead>
+        <tbody id="bill-rows"></tbody>
+      </table>
+    </section>
+  </main>
+  <footer class="footer">© Budgetly</footer>
+
+  <script>
+    function renderBills(){
+      const db = JSON.parse(localStorage.getItem('budget:data')||'{}');
+      const rows = (db.bills||[]).map(i=>`<tr><td>${i.type}</td><td>${i.planned}</td><td>${i.actual}</td><td>${i.status==='paid'?'<span class=\'badge paid\'>مدفوعة</span>':'<span class=\'badge overdue\'>متأخرة</span>'}</td></tr>`).join('');
+      document.getElementById('bill-rows').innerHTML = rows;
+    }
+    function addBill(){
+      const type = document.getElementById('bill-type').value.trim();
+      const planned = Number(document.getElementById('bill-planned').value||0);
+      const actual = Number(document.getElementById('bill-actual').value||0);
+      const status = document.getElementById('bill-status').value;
+      const db = JSON.parse(localStorage.getItem('budget:data')||'{"bills":[]}');
+      db.bills = db.bills||[];
+      db.bills.push({type, planned, actual, status});
+      localStorage.setItem('budget:data', JSON.stringify(db));
+      renderBills();
+    }
+    document.addEventListener('DOMContentLoaded',()=>{
+      renderBills();
+      document.getElementById('add-bill').addEventListener('click', addBill);
+    });
+  </script>
+</body>
+</html>
