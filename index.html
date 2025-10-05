@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الميزانية - لوحة التحكم</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-chart-pie"></i>
+                <h1>إدارة الميزانية</h1>
+            </div>
+            <div class="month-display">
+                <h2 id="current-month">سبتمبر 2024</h2>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link active"><i class="fas fa-home"></i> لوحة التحكم</a></li>
+            <li><a href="income.html" class="nav-link"><i class="fas fa-arrow-up"></i> الدخل</a></li>
+            <li><a href="expenses.html" class="nav-link"><i class="fas fa-arrow-down"></i> المصاريف</a></li>
+            <li><a href="bills.html" class="nav-link"><i class="fas fa-file-invoice"></i> الفواتير</a></li>
+            <li><a href="savings.html" class="nav-link"><i class="fas fa-piggy-bank"></i> المدخرات</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Stats Cards -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card income">
+                    <div class="stat-icon">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>إجمالي الدخل</h3>
+                        <p class="stat-amount" id="total-income">15,000 ريال</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card expenses">
+                    <div class="stat-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>إجمالي المصاريف</h3>
+                        <p class="stat-amount" id="total-expenses">8,500 ريال</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card bills">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>إجمالي الفواتير</h3>
+                        <p class="stat-amount" id="total-bills">3,200 ريال</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card savings">
+                    <div class="stat-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>إجمالي المدخرات</h3>
+                        <p class="stat-amount" id="total-savings">3,300 ريال</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="charts-grid">
+                <!-- Donut Chart for Remaining Amount -->
+                <div class="chart-container">
+                    <h3>المبلغ المتبقي</h3>
+                    <canvas id="remainingChart"></canvas>
+                    <div class="remaining-amount" id="remaining-amount">0 ريال</div>
+                </div>
+                
+                <!-- Bar Chart for Cash Flow -->
+                <div class="chart-container">
+                    <h3>ملخص التدفق النقدي</h3>
+                    <canvas id="cashFlowChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

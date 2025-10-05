@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الميزانية - الفواتير</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-chart-pie"></i>
+                <h1>إدارة الميزانية</h1>
+            </div>
+            <div class="month-display">
+                <h2 id="current-month">سبتمبر 2024</h2>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> لوحة التحكم</a></li>
+            <li><a href="income.html" class="nav-link"><i class="fas fa-arrow-up"></i> الدخل</a></li>
+            <li><a href="expenses.html" class="nav-link"><i class="fas fa-arrow-down"></i> المصاريف</a></li>
+            <li><a href="bills.html" class="nav-link active"><i class="fas fa-file-invoice"></i> الفواتير</a></li>
+            <li><a href="savings.html" class="nav-link"><i class="fas fa-piggy-bank"></i> المدخرات</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Bills Table -->
+        <section class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-file-invoice"></i> الفواتير</h2>
+                <button class="btn" onclick="openModal('billModal')">
+                    <i class="fas fa-plus"></i> إضافة فاتورة
+                </button>
+            </div>
+            
+            <table id="billTable">
+                <thead>
+                    <tr>
+                        <th>نوع الفاتورة</th>
+                        <th>المخطط</th>
+                        <th>الفعلي</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>إيجار</td>
+                        <td>2,000 ريال</td>
+                        <td>2,000 ريال</td>
+                        <td><span class="status paid">مدفوعة</span></td>
+                        <td>
+                            <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="toggleBillStatus(0)">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>كهرباء</td>
+                        <td>400 ريال</td>
+                        <td>450 ريال</td>
+                        <td><span class="status paid">مدفوعة</span></td>
+                        <td>
+                            <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="toggleBillStatus(1)">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>إنترنت</td>
+                        <td>200 ريال</td>
+                        <td>200 ريال</td>
+                        <td><span class="status paid">مدفوعة</span></td>
+                        <td>
+                            <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="toggleBillStatus(2)">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>مياه</td>
+                        <td>150 ريال</td>
+                        <td>0 ريال</td>
+                        <td><span class="status overdue">متأخرة</span></td>
+                        <td>
+                            <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="toggleBillStatus(3)">
+                                <i class="fas fa-exclamation"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Bills Summary -->
+        <section class="charts-section">
+            <div class="charts-grid">
+                <!-- Bills Status Chart -->
+                <div class="chart-container">
+                    <h3>حالة الفواتير</h3>
+                    <canvas id="billsStatusChart"></canvas>
+                </div>
+                
+                <!-- Bills Amount Chart -->
+                <div class="chart-container">
+                    <h3>مبالغ الفواتير</h3>
+                    <canvas id="billsAmountChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bills Summary Cards -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card" style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white;">
+                    <div class="stat-icon" style="background: rgba(255,255,255,0.2);">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>مدفوعة</h3>
+                        <p class="stat-amount" id="paid-bills">3</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white;">
+                    <div class="stat-icon" style="background: rgba(255,255,255,0.2);">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>معلقة</h3>
+                        <p class="stat-amount" id="pending-bills">0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card" style="background: linear-gradient(135deg, #f44336, #d32f2f); color: white;">
+                    <div class="stat-icon" style="background: rgba(255,255,255,0.2);">
+                        <i class="fas fa-exclamation"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>متأخرة</h3>
+                        <p class="stat-amount" id="overdue-bills">1</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add Bill Modal -->
+    <div id="billModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('billModal')">&times;</span>
+            <h2>إضافة فاتورة جديدة</h2>
+            <form id="billForm">
+                <div class="form-group">
+                    <label for="type">نوع الفاتورة:</label>
+                    <select id="type" name="type" required>
+                        <option value="">اختر نوع الفاتورة</option>
+                        <option value="إيجار">إيجار</option>
+                        <option value="كهرباء">كهرباء</option>
+                        <option value="مياه">مياه</option>
+                        <option value="إنترنت">إنترنت</option>
+                        <option value="هاتف">هاتف</option>
+                        <option value="غاز">غاز</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="planned">المبلغ المخطط (ريال):</label>
+                    <input type="number" id="planned" name="planned" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="actual">المبلغ الفعلي (ريال):</label>
+                    <input type="number" id="actual" name="actual" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">الحالة:</label>
+                    <select id="status" name="status" required>
+                        <option value="paid">مدفوعة</option>
+                        <option value="pending">معلقة</option>
+                        <option value="overdue">متأخرة</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('billModal')">إلغاء</button>
+                    <button type="button" class="btn" onclick="addBillItem()">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize bills page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentMonth();
+            updateBillTable();
+            updateBillsSummary();
+            initializeBillsCharts();
+        });
+
+        // Update bills summary
+        function updateBillsSummary() {
+            const paidCount = budgetData.bills.filter(bill => bill.status === 'paid').length;
+            const pendingCount = budgetData.bills.filter(bill => bill.status === 'pending').length;
+            const overdueCount = budgetData.bills.filter(bill => bill.status === 'overdue').length;
+            
+            document.getElementById('paid-bills').textContent = paidCount;
+            document.getElementById('pending-bills').textContent = pendingCount;
+            document.getElementById('overdue-bills').textContent = overdueCount;
+        }
+
+        // Toggle bill status
+        function toggleBillStatus(index) {
+            const bill = budgetData.bills[index];
+            if (bill.status === 'paid') {
+                bill.status = 'pending';
+            } else if (bill.status === 'pending') {
+                bill.status = 'overdue';
+            } else {
+                bill.status = 'paid';
+            }
+            updateBillTable();
+            updateBillsSummary();
+            initializeBillsCharts();
+        }
+
+        // Initialize bills charts
+        function initializeBillsCharts() {
+            const billsData = budgetData.bills;
+            
+            // Status Chart
+            const statusCtx = document.getElementById('billsStatusChart').getContext('2d');
+            const statusCounts = {
+                paid: billsData.filter(bill => bill.status === 'paid').length,
+                pending: billsData.filter(bill => bill.status === 'pending').length,
+                overdue: billsData.filter(bill => bill.status === 'overdue').length
+            };
+            
+            new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['مدفوعة', 'معلقة', 'متأخرة'],
+                    datasets: [{
+                        data: [statusCounts.paid, statusCounts.pending, statusCounts.overdue],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.8)',
+                            'rgba(255, 152, 0, 0.8)',
+                            'rgba(244, 67, 54, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(76, 175, 80, 1)',
+                            'rgba(255, 152, 0, 1)',
+                            'rgba(244, 67, 54, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Amount Chart
+            const amountCtx = document.getElementById('billsAmountChart').getContext('2d');
+            new Chart(amountCtx, {
+                type: 'bar',
+                data: {
+                    labels: billsData.map(bill => bill.type),
+                    datasets: [{
+                        label: 'المبلغ الفعلي',
+                        data: billsData.map(bill => bill.actual),
+                        backgroundColor: billsData.map(bill => {
+                            switch(bill.status) {
+                                case 'paid': return 'rgba(76, 175, 80, 0.8)';
+                                case 'pending': return 'rgba(255, 152, 0, 0.8)';
+                                case 'overdue': return 'rgba(244, 67, 54, 0.8)';
+                                default: return 'rgba(158, 158, 158, 0.8)';
+                            }
+                        }),
+                        borderColor: billsData.map(bill => {
+                            switch(bill.status) {
+                                case 'paid': return 'rgba(76, 175, 80, 1)';
+                                case 'pending': return 'rgba(255, 152, 0, 1)';
+                                case 'overdue': return 'rgba(244, 67, 54, 1)';
+                                default: return 'rgba(158, 158, 158, 1)';
+                            }
+                        }),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString() + ' ريال';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toLocaleString() + ' ريال';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

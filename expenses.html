@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الميزانية - المصاريف</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-chart-pie"></i>
+                <h1>إدارة الميزانية</h1>
+            </div>
+            <div class="month-display">
+                <h2 id="current-month">سبتمبر 2024</h2>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> لوحة التحكم</a></li>
+            <li><a href="income.html" class="nav-link"><i class="fas fa-arrow-up"></i> الدخل</a></li>
+            <li><a href="expenses.html" class="nav-link active"><i class="fas fa-arrow-down"></i> المصاريف</a></li>
+            <li><a href="bills.html" class="nav-link"><i class="fas fa-file-invoice"></i> الفواتير</a></li>
+            <li><a href="savings.html" class="nav-link"><i class="fas fa-piggy-bank"></i> المدخرات</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Expenses Table -->
+        <section class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-arrow-down"></i> فئات المصاريف</h2>
+                <button class="btn" onclick="openModal('expenseModal')">
+                    <i class="fas fa-plus"></i> إضافة مصروف
+                </button>
+            </div>
+            
+            <table id="expenseTable">
+                <thead>
+                    <tr>
+                        <th>الفئة</th>
+                        <th>المخطط</th>
+                        <th>الفعلي</th>
+                        <th>الفرق</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>طعام</td>
+                        <td>2,000 ريال</td>
+                        <td>1,800 ريال</td>
+                        <td style="color: #4CAF50;">-200 ريال</td>
+                    </tr>
+                    <tr>
+                        <td>مواصلات</td>
+                        <td>800 ريال</td>
+                        <td>750 ريال</td>
+                        <td style="color: #4CAF50;">-50 ريال</td>
+                    </tr>
+                    <tr>
+                        <td>تسلية</td>
+                        <td>500 ريال</td>
+                        <td>600 ريال</td>
+                        <td style="color: #f44336;">+100 ريال</td>
+                    </tr>
+                    <tr>
+                        <td>صحة</td>
+                        <td>300 ريال</td>
+                        <td>250 ريال</td>
+                        <td style="color: #4CAF50;">-50 ريال</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="charts-grid">
+                <!-- Pie Chart for Expenses -->
+                <div class="chart-container">
+                    <h3>توزيع المصاريف</h3>
+                    <canvas id="expensePieChart"></canvas>
+                </div>
+                
+                <!-- Bar Chart for Planned vs Actual -->
+                <div class="chart-container">
+                    <h3>المخطط مقابل الفعلي</h3>
+                    <canvas id="expenseBarChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add Expense Modal -->
+    <div id="expenseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('expenseModal')">&times;</span>
+            <h2>إضافة مصروف جديد</h2>
+            <form id="expenseForm">
+                <div class="form-group">
+                    <label for="category">الفئة:</label>
+                    <select id="category" name="category" required>
+                        <option value="">اختر الفئة</option>
+                        <option value="طعام">طعام</option>
+                        <option value="مواصلات">مواصلات</option>
+                        <option value="تسلية">تسلية</option>
+                        <option value="صحة">صحة</option>
+                        <option value="ملابس">ملابس</option>
+                        <option value="تعليم">تعليم</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="planned">المبلغ المخطط (ريال):</label>
+                    <input type="number" id="planned" name="planned" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="actual">المبلغ الفعلي (ريال):</label>
+                    <input type="number" id="actual" name="actual" min="0" step="0.01" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('expenseModal')">إلغاء</button>
+                    <button type="button" class="btn" onclick="addExpenseItem()">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize expenses page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentMonth();
+            updateExpenseTable();
+            initializeExpenseCharts();
+        });
+
+        // Initialize expense charts
+        function initializeExpenseCharts() {
+            const expenseData = budgetData.expenses;
+            
+            // Pie Chart
+            const pieCtx = document.getElementById('expensePieChart').getContext('2d');
+            new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: expenseData.map(item => item.category),
+                    datasets: [{
+                        data: expenseData.map(item => item.actual),
+                        backgroundColor: [
+                            'rgba(244, 67, 54, 0.8)',
+                            'rgba(255, 152, 0, 0.8)',
+                            'rgba(156, 39, 176, 0.8)',
+                            'rgba(33, 150, 243, 0.8)',
+                            'rgba(76, 175, 80, 0.8)',
+                            'rgba(255, 193, 7, 0.8)',
+                            'rgba(121, 85, 72, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(244, 67, 54, 1)',
+                            'rgba(255, 152, 0, 1)',
+                            'rgba(156, 39, 176, 1)',
+                            'rgba(33, 150, 243, 1)',
+                            'rgba(76, 175, 80, 1)',
+                            'rgba(255, 193, 7, 1)',
+                            'rgba(121, 85, 72, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return context.label + ': ' + value.toLocaleString() + ' ريال (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Bar Chart
+            const barCtx = document.getElementById('expenseBarChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: expenseData.map(item => item.category),
+                    datasets: [{
+                        label: 'المخطط',
+                        data: expenseData.map(item => item.planned),
+                        backgroundColor: 'rgba(33, 150, 243, 0.8)',
+                        borderColor: 'rgba(33, 150, 243, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'الفعلي',
+                        data: expenseData.map(item => item.actual),
+                        backgroundColor: 'rgba(244, 67, 54, 0.8)',
+                        borderColor: 'rgba(244, 67, 54, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString() + ' ريال';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' ريال';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
