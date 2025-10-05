@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الميزانية - الفواتير</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-wallet"></i>
+            <span>إدارة الميزانية</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">لوحة التحكم</a></li>
+            <li><a href="income.html" class="nav-link">الدخل</a></li>
+            <li><a href="expenses.html" class="nav-link">المصاريف</a></li>
+            <li><a href="bills.html" class="nav-link active">الفواتير</a></li>
+            <li><a href="savings.html" class="nav-link">المدخرات</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>
+                <i class="fas fa-file-invoice"></i>
+                إدارة الفواتير
+            </h1>
+            <button class="btn btn-primary" onclick="openAddBillModal()">
+                <i class="fas fa-plus"></i>
+                إضافة فاتورة جديدة
+            </button>
+        </header>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>نوع الفاتورة</th>
+                        <th>المبلغ المخطط</th>
+                        <th>المبلغ الفعلي</th>
+                        <th>تاريخ الاستحقاق</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="billsTableBody">
+                    <tr>
+                        <td>
+                            <i class="fas fa-home"></i>
+                            إيجار السكن
+                        </td>
+                        <td>2,000 ريال</td>
+                        <td>2,000 ريال</td>
+                        <td>2024-10-01</td>
+                        <td><span class="status paid">مدفوعة ✅</span></td>
+                        <td>
+                            <button class="btn btn-small btn-edit" onclick="editBill(0)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-small btn-delete" onclick="deleteBill(0)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fas fa-bolt"></i>
+                            فاتورة الكهرباء
+                        </td>
+                        <td>400 ريال</td>
+                        <td>450 ريال</td>
+                        <td>2024-10-15</td>
+                        <td><span class="status pending">متأخرة ⏳</span></td>
+                        <td>
+                            <button class="btn btn-small btn-edit" onclick="editBill(1)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-small btn-delete" onclick="deleteBill(1)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fas fa-wifi"></i>
+                            فاتورة الإنترنت
+                        </td>
+                        <td>300 ريال</td>
+                        <td>280 ريال</td>
+                        <td>2024-10-20</td>
+                        <td><span class="status paid">مدفوعة ✅</span></td>
+                        <td>
+                            <button class="btn btn-small btn-edit" onclick="editBill(2)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-small btn-delete" onclick="deleteBill(2)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fas fa-phone"></i>
+                            فاتورة الهاتف
+                        </td>
+                        <td>150 ريال</td>
+                        <td>165 ريال</td>
+                        <td>2024-10-25</td>
+                        <td><span class="status upcoming">قادمة 📅</span></td>
+                        <td>
+                            <button class="btn btn-small btn-edit" onclick="editBill(3)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-small btn-delete" onclick="deleteBill(3)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Bill Modal -->
+    <div id="addBillModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إضافة فاتورة جديدة</h3>
+                <span class="close" onclick="closeAddBillModal()">&times;</span>
+            </div>
+            <form id="billForm">
+                <div class="form-group">
+                    <label for="billType">نوع الفاتورة:</label>
+                    <select id="billType" required>
+                        <option value="">اختر نوع الفاتورة</option>
+                        <option value="rent">إيجار السكن</option>
+                        <option value="electricity">فاتورة الكهرباء</option>
+                        <option value="water">فاتورة المياه</option>
+                        <option value="internet">فاتورة الإنترنت</option>
+                        <option value="phone">فاتورة الهاتف</option>
+                        <option value="gas">فاتورة الغاز</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="plannedBill">المبلغ المخطط:</label>
+                    <input type="number" id="plannedBill" required>
+                </div>
+                <div class="form-group">
+                    <label for="actualBill">المبلغ الفعلي:</label>
+                    <input type="number" id="actualBill">
+                </div>
+                <div class="form-group">
+                    <label for="dueDate">تاريخ الاستحقاق:</label>
+                    <input type="date" id="dueDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="billStatus">الحالة:</label>
+                    <select id="billStatus" required>
+                        <option value="upcoming">قادمة</option>
+                        <option value="pending">متأخرة</option>
+                        <option value="paid">مدفوعة</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddBillModal()">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/bills.js"></script>
+</body>
+</html>

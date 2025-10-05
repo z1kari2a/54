@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الميزانية - المدخرات</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-wallet"></i>
+            <span>إدارة الميزانية</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">لوحة التحكم</a></li>
+            <li><a href="income.html" class="nav-link">الدخل</a></li>
+            <li><a href="expenses.html" class="nav-link">المصاريف</a></li>
+            <li><a href="bills.html" class="nav-link">الفواتير</a></li>
+            <li><a href="savings.html" class="nav-link active">المدخرات</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>
+                <i class="fas fa-piggy-bank"></i>
+                إدارة المدخرات
+            </h1>
+            <button class="btn btn-primary" onclick="openAddSavingModal()">
+                <i class="fas fa-plus"></i>
+                إضافة مدخر جديد
+            </button>
+        </header>
+
+        <div class="savings-layout">
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>نوع الادخار</th>
+                            <th>الهدف</th>
+                            <th>المبلغ الحالي</th>
+                            <th>النسبة المئوية</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="savingsTableBody">
+                        <tr>
+                            <td>
+                                <i class="fas fa-university"></i>
+                                حساب التوفير
+                            </td>
+                            <td>20,000 ريال</td>
+                            <td>15,000 ريال</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 75%"></div>
+                                </div>
+                                <span class="progress-text">75%</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-small btn-edit" onclick="editSaving(0)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-small btn-delete" onclick="deleteSaving(0)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <i class="fas fa-chart-line"></i>
+                                استثمار الأسهم
+                            </td>
+                            <td>10,000 ريال</td>
+                            <td>6,500 ريال</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <span class="progress-text">65%</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-small btn-edit" onclick="editSaving(1)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-small btn-delete" onclick="deleteSaving(1)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <i class="fas fa-car"></i>
+                                صندوق السيارة
+                            </td>
+                            <td>50,000 ريال</td>
+                            <td>18,000 ريال</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 36%"></div>
+                                </div>
+                                <span class="progress-text">36%</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-small btn-edit" onclick="editSaving(2)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-small btn-delete" onclick="deleteSaving(2)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <h3>التقدم نحو الأهداف</h3>
+                <canvas id="savingsProgressChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Saving Modal -->
+    <div id="addSavingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إضافة مدخر جديد</h3>
+                <span class="close" onclick="closeAddSavingModal()">&times;</span>
+            </div>
+            <form id="savingForm">
+                <div class="form-group">
+                    <label for="savingType">نوع الادخار:</label>
+                    <select id="savingType" required>
+                        <option value="">اختر نوع الادخار</option>
+                        <option value="savings">حساب التوفير</option>
+                        <option value="investment">استثمار الأسهم</option>
+                        <option value="emergency">صندوق الطوارئ</option>
+                        <option value="car">صندوق السيارة</option>
+                        <option value="house">صندوق المنزل</option>
+                        <option value="vacation">صندوق العطلة</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="targetAmount">مبلغ الهدف:</label>
+                    <input type="number" id="targetAmount" required>
+                </div>
+                <div class="form-group">
+                    <label for="currentAmount">المبلغ الحالي:</label>
+                    <input type="number" id="currentAmount" value="0">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddSavingModal()">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/savings.js"></script>
+</body>
+</html>
