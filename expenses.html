@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>المصاريف - Budgetly</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+  <header class="header" data-header></header>
+  <main class="container">
+    <section class="section">
+      <div class="actions">
+        <input class="input" id="exp-cat" placeholder="الفئة" />
+        <input class="input" id="exp-planned" placeholder="المخطط" type="number" />
+        <input class="input" id="exp-actual" placeholder="الفعلي" type="number" />
+        <button class="button" id="add-exp">إضافة مصروف</button>
+      </div>
+    </section>
+
+    <section class="section" style="margin-top:16px">
+      <table class="table">
+        <thead>
+          <tr><th>الفئة</th><th>المخطط</th><th>الفعلي</th></tr>
+        </thead>
+        <tbody id="exp-rows"></tbody>
+      </table>
+    </section>
+
+    <section class="chart-container" style="margin-top:16px">
+      <h3 style="margin:8px 0">توزيع المصاريف</h3>
+      <canvas id="expChart" height="140"></canvas>
+    </section>
+  </main>
+  <footer class="footer">© Budgetly</footer>
+
+  <script>
+    function renderExpenses(){
+      const db = JSON.parse(localStorage.getItem('budget:data')||'{}');
+      const rows = (db.expenses||[]).map(i=>`<tr><td>${i.category}</td><td>${i.planned}</td><td>${i.actual}</td></tr>`).join('');
+      document.getElementById('exp-rows').innerHTML = rows;
+      const ctx = document.getElementById('expChart');
+      if(window.Chart && ctx){
+        const labels = (db.expenses||[]).map(i=>i.category);
+        const data = (db.expenses||[]).map(i=>Number(i.actual)||0);
+        new Chart(ctx,{ type:'doughnut', data:{ labels, datasets:[{ data, backgroundColor: ['#2563eb','#ef4444','#f59e0b','#10b981','#a78bfa','#f472b6'] }] }, options:{ plugins:{ legend:{ position:'bottom' } } } });
+      }
+    }
+    function addExpense(){
+      const category = document.getElementById('exp-cat').value.trim();
+      const planned = Number(document.getElementById('exp-planned').value||0);
+      const actual = Number(document.getElementById('exp-actual').value||0);
+      const db = JSON.parse(localStorage.getItem('budget:data')||'{"expenses":[]}');
+      db.expenses = db.expenses||[];
+      db.expenses.push({category, planned, actual});
+      localStorage.setItem('budget:data', JSON.stringify(db));
+      renderExpenses();
+    }
+    document.addEventListener('DOMContentLoaded',()=>{
+      renderExpenses();
+      document.getElementById('add-exp').addEventListener('click', addExpense);
+    });
+  </script>
+</body>
+</html>

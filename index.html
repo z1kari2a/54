@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>لوحة التحكم - Budgetly</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+  <header class="header" data-header></header>
+  <main class="container">
+    <section class="grid kpis" data-kpis></section>
+    <section class="grid" style="margin-top:16px">
+      <div class="chart-container">
+        <h3 style="margin:8px 0">المبلغ المتبقي</h3>
+        <canvas id="donutChart" height="140"></canvas>
+        <div style="margin-top:8px">المتبقي: <strong data-remaining></strong></div>
+      </div>
+      <div class="chart-container">
+        <h3 style="margin:8px 0">ملخص التدفق النقدي</h3>
+        <canvas id="barChart" height="140"></canvas>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">© Budgetly</footer>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>المدخرات - Budgetly</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+  <header class="header" data-header></header>
+  <main class="container">
+    <section class="section">
+      <div class="actions">
+        <input class="input" id="sav-type" placeholder="نوع الادخار" />
+        <input class="input" id="sav-planned" placeholder="المخطط" type="number" />
+        <input class="input" id="sav-actual" placeholder="الفعلي" type="number" />
+        <button class="button" id="add-sav">إضافة ادخار</button>
+      </div>
+    </section>
+
+    <section class="section" style="margin-top:16px">
+      <table class="table">
+        <thead>
+          <tr><th>النوع</th><th>المخطط</th><th>الفعلي</th></tr>
+        </thead>
+        <tbody id="sav-rows"></tbody>
+      </table>
+    </section>
+
+    <section class="chart-container" style="margin-top:16px">
+      <h3 style="margin:8px 0">التقدم نحو الهدف</h3>
+      <canvas id="savChart" height="140"></canvas>
+    </section>
+  </main>
+  <footer class="footer">© Budgetly</footer>
+
+  <script>
+    function renderSavings(){
+      const db = JSON.parse(localStorage.getItem('budget:data')||'{}');
+      const rows = (db.savings||[]).map(i=>`<tr><td>${i.type}</td><td>${i.planned}</td><td>${i.actual}</td></tr>`).join('');
+      document.getElementById('sav-rows').innerHTML = rows;
+      const ctx = document.getElementById('savChart');
+      if(window.Chart && ctx){
+        const labels = (db.savings||[]).map(i=>i.type);
+        const data = (db.savings||[]).map(i=>Math.min(Number(i.actual)||0, Number(i.planned)||0));
+        new Chart(ctx,{ type:'bar', data:{ labels, datasets:[{ label:'التقدم', data, backgroundColor:'#10b981' }] }, options:{ plugins:{ legend:{ display:false } } } });
+      }
+    }
+    function addSaving(){
+      const type = document.getElementById('sav-type').value.trim();
+      const planned = Number(document.getElementById('sav-planned').value||0);
+      const actual = Number(document.getElementById('sav-actual').value||0);
+      const db = JSON.parse(localStorage.getItem('budget:data')||'{"savings":[]}');
+      db.savings = db.savings||[];
+      db.savings.push({type, planned, actual});
+      localStorage.setItem('budget:data', JSON.stringify(db));
+      renderSavings();
+    }
+    document.addEventListener('DOMContentLoaded',()=>{
+      renderSavings();
+      document.getElementById('add-sav').addEventListener('click', addSaving);
+    });
+  </script>
+</body>
+</html>
