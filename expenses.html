@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المصاريف - إدارة الميزانية</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>💰 إدارة الميزانية</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">لوحة التحكم</a></li>
+                <li><a href="income.html">الدخل</a></li>
+                <li><a href="expenses.html" class="active">المصاريف</a></li>
+                <li><a href="bills.html">الفواتير</a></li>
+                <li><a href="savings.html">المدخرات</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="page-header">
+        <h1>إدارة المصاريف</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="page-actions">
+            <button class="btn-primary" onclick="openAddModal('expense')">
+                ➕ إضافة مصروف جديد
+            </button>
+        </div>
+
+        <div class="expenses-layout">
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>الفئة</th>
+                            <th>المبلغ المخطط</th>
+                            <th>المبلغ الفعلي</th>
+                            <th>الفرق</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expense-table-body">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td><strong>الإجمالي</strong></td>
+                            <td id="expense-planned-total">0 ريال</td>
+                            <td id="expense-actual-total">0 ريال</td>
+                            <td id="expense-difference-total">0 ريال</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <h2>توزيع المصاريف</h2>
+                <canvas id="expensesPieChart"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">إضافة مصروف</h2>
+            <form id="expense-form" onsubmit="saveExpense(event)">
+                <div class="form-group">
+                    <label>الفئة</label>
+                    <select id="expense-category" required>
+                        <option value="">اختر الفئة</option>
+                        <option value="أكل">أكل</option>
+                        <option value="مواصلات">مواصلات</option>
+                        <option value="تسلية">تسلية</option>
+                        <option value="صحة">صحة</option>
+                        <option value="تعليم">تعليم</option>
+                        <option value="ملابس">ملابس</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>المبلغ المخطط</label>
+                    <input type="number" id="expense-planned" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>المبلغ الفعلي</label>
+                    <input type="number" id="expense-actual" step="0.01" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal()">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

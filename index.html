@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - إدارة الميزانية</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>💰 إدارة الميزانية</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">لوحة التحكم</a></li>
+                <li><a href="income.html">الدخل</a></li>
+                <li><a href="expenses.html">المصاريف</a></li>
+                <li><a href="bills.html">الفواتير</a></li>
+                <li><a href="savings.html">المدخرات</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="page-header">
+        <h1 id="current-month">سبتمبر 2025</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Statistics Cards -->
+        <section class="stats-grid">
+            <div class="stat-card income-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-content">
+                    <h3>إجمالي الدخل</h3>
+                    <p class="stat-value" id="total-income">0 ريال</p>
+                </div>
+            </div>
+
+            <div class="stat-card expense-card">
+                <div class="stat-icon">💸</div>
+                <div class="stat-content">
+                    <h3>إجمالي المصاريف</h3>
+                    <p class="stat-value" id="total-expenses">0 ريال</p>
+                </div>
+            </div>
+
+            <div class="stat-card bills-card">
+                <div class="stat-icon">📄</div>
+                <div class="stat-content">
+                    <h3>إجمالي الفواتير</h3>
+                    <p class="stat-value" id="total-bills">0 ريال</p>
+                </div>
+            </div>
+
+            <div class="stat-card savings-card">
+                <div class="stat-icon">🏦</div>
+                <div class="stat-content">
+                    <h3>إجمالي المدخرات</h3>
+                    <p class="stat-value" id="total-savings">0 ريال</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <!-- Remaining Amount Gauge -->
+            <div class="chart-container gauge-container">
+                <h2>المبلغ المتبقي للصرف</h2>
+                <canvas id="remainingChart"></canvas>
+                <div class="remaining-amount" id="remaining-amount">0 ريال</div>
+            </div>
+
+            <!-- Cash Flow Bar Chart -->
+            <div class="chart-container bar-container">
+                <h2>ملخص التدفق النقدي</h2>
+                <canvas id="cashFlowChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

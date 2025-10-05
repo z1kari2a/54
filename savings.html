@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المدخرات - إدارة الميزانية</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>💰 إدارة الميزانية</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">لوحة التحكم</a></li>
+                <li><a href="income.html">الدخل</a></li>
+                <li><a href="expenses.html">المصاريف</a></li>
+                <li><a href="bills.html">الفواتير</a></li>
+                <li><a href="savings.html" class="active">المدخرات</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="page-header">
+        <h1>إدارة المدخرات</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="page-actions">
+            <button class="btn-primary" onclick="openAddModal('saving')">
+                ➕ إضافة هدف ادخار جديد
+            </button>
+        </div>
+
+        <div class="savings-layout">
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>نوع الادخار</th>
+                            <th>المبلغ المخطط</th>
+                            <th>المبلغ الفعلي</th>
+                            <th>النسبة المئوية</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="saving-table-body">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td><strong>الإجمالي</strong></td>
+                            <td id="saving-planned-total">0 ريال</td>
+                            <td id="saving-actual-total">0 ريال</td>
+                            <td id="saving-percentage-total">0%</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <h2>التقدم نحو الأهداف</h2>
+                <canvas id="savingsProgressChart"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">إضافة هدف ادخار</h2>
+            <form id="saving-form" onsubmit="saveSaving(event)">
+                <div class="form-group">
+                    <label>نوع الادخار</label>
+                    <select id="saving-type" required>
+                        <option value="">اختر النوع</option>
+                        <option value="حساب توفير">حساب توفير</option>
+                        <option value="استثمار">استثمار</option>
+                        <option value="صندوق طوارئ">صندوق طوارئ</option>
+                        <option value="تعليم">تعليم</option>
+                        <option value="سفر">سفر</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>المبلغ المخطط (الهدف)</label>
+                    <input type="number" id="saving-planned" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>المبلغ الفعلي (المدخر حالياً)</label>
+                    <input type="number" id="saving-actual" step="0.01" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal()">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
